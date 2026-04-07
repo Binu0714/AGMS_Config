@@ -1,0 +1,44 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        # Route 1: Auth Service (Login/Register)
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
+
+        # Route 2: Zone Management Service
+        - id: zone-service
+          uri: lb://zone-service
+          predicates:
+            - Path=/api/zones/**
+          filters:
+            - Authentication # This triggers your AuthenticationFilter.java
+
+        # Route 3: Automation Service
+        - id: automation-service
+          uri: lb://automation-service
+          predicates:
+            - Path=/api/automation/**
+          filters:
+            - Authentication
+
+        # Route 4: Crop Inventory Service
+        - id: crop-service
+          uri: lb://crop-service
+          predicates:
+            - Path=/api/crops/**
+          filters:
+            - Authentication
+
+jwt:
+  secret: 12c5d25d055e15e2e87b25329dece78a8edc8132f3e82da47e442fa76c5e0ad8
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
