@@ -1,0 +1,31 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: sensor-service
+
+# External IoT API Credentials (used by your ExternalAuthServiceImpl)
+external:
+  iot:
+    base-url: http://104.211.95.241:8080/api
+    username: binu   # Replace with your external API username
+    password: 123456   # Replace with your external API password
+
+# Eureka Registration
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+
+# Feign configuration for Inter-service communication
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
